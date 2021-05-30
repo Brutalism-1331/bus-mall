@@ -1,0 +1,115 @@
+'use strict';
+
+//global variables
+let allProduct = [];
+let clicks = 0;
+let clicksAllowed = 25;
+let productValidation = [];
+
+let myContainer = document.querySelector('section');
+let myButton = document.querySelector('div');
+let imageOne = document.getElementById('imgOne')
+let imageTwo = document.getElementById('imgTwo')
+let imageThree = document.getElementById('imgThree')
+
+
+
+function CreateProduct(product, fileExtension = 'jpg') {
+  this.product = product;
+  this.src = `img/${product}.${fileExtension}`;
+  this.clicks = 0;
+  this.views = 0;
+  allProduct.push(this);
+}
+
+new CreateProduct('bag');
+new CreateProduct('banana');
+new CreateProduct('bathroom');
+new CreateProduct('boots');
+new CreateProduct('breakfast');
+new CreateProduct('bubblegum');
+new CreateProduct('chair');
+new CreateProduct('cthulhu');
+new CreateProduct('dog-duck');
+new CreateProduct('dragon');
+new CreateProduct('pen');
+new CreateProduct('pet-sweep');
+new CreateProduct('scissors');
+new CreateProduct('shark');
+new CreateProduct('sweep', 'png');
+new CreateProduct('tauntaun');
+new CreateProduct('unicorn');
+new CreateProduct('water-can');
+new CreateProduct('wine-glass');
+
+function selectRandomProductIndex() {
+  return Math.floor(Math.random() * allProduct.length);
+}
+
+function renderRandomProduct() {
+  while (productValidation.length < 3) {
+    let uniqueProduct = selectRandomProductIndex();
+    while (!productValidation.includes(uniqueProduct)) {
+      productValidation.push(uniqueProduct);
+    }
+  }
+  console.log(productValidation);
+
+  let productOne = productValidation.pop();
+  let productTwo = productValidation.pop();
+  let productThree = productValidation.pop();
+
+  imageOne.src = allProduct[productOne].src;
+  imageOne.alt = allProduct[productOne].name;
+  allProduct[productOne].views++;
+
+  imageTwo.src = allProduct[productTwo].src;
+  imageTwo.alt = allProduct[productTwo].name;
+  allProduct[productTwo].views++;
+
+  imageThree.src = allProduct[productThree].src;
+  imageOne.alt = allProduct[productThree].name;
+  allProduct[productThree].views++;
+}
+
+
+function handleProductClick(event) {
+    if (event.target === myContainer) {
+        alert('click on an IMAGE please');
+      }
+    
+    renderRandomProduct();
+    clicks++;
+    let clickedProduct = event.target.alt;
+    for (let i = 0; i < allProduct.length; i++) {
+      if (clickedProduct === allProduct[i].name) {
+        allProduct[i].clicks++;
+      }
+    }
+    
+
+    if (clicks === clicksAllowed) {
+      myContainer.removeEventListener('click', handleProductClick);
+    }
+  }
+
+  function renderResults() {
+    let ul = document.querySelector('ul');
+    for (let i = 0; i < allProduct.length; i++) {
+      let li = document.createElement('li');
+      li.textContent = `${allProduct[i].product} had ${allProduct[i].views} views and was clicked ${allProduct[i].clicks} times.`;
+      ul.appendChild(li);
+    }
+  }
+
+  function handleButtonClick(event) { //eslint-disable-line
+    if (clicks === clicksAllowed) {
+      renderResults();
+    }
+  }
+
+  renderRandomProduct();
+
+
+  myContainer.addEventListener('click', handleProductClick);
+  myButton.addEventListener('click', handleButtonClick);
