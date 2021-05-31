@@ -8,16 +8,16 @@ let productValidation = [];
 
 let myContainer = document.querySelector('section');
 let myButton = document.querySelector('div');
-let imageOne = document.getElementById('imgOne')
-let imageTwo = document.getElementById('imgTwo')
-let imageThree = document.getElementById('imgThree')
+let imageOne = document.getElementById('imgOne');
+let imageTwo = document.getElementById('imgTwo');
+let imageThree = document.getElementById('imgThree');
 
 
 
 function CreateProduct(product, fileExtension = 'jpg') {
   this.product = product;
   this.src = `img/${product}.${fileExtension}`;
-  this.clicks = 0;
+  this.clicked = 0;
   this.views = 0;
   allProduct.push(this);
 }
@@ -53,63 +53,65 @@ function renderRandomProduct() {
       productValidation.push(uniqueProduct);
     }
   }
-  console.log(productValidation);
 
   let productOne = productValidation.pop();
   let productTwo = productValidation.pop();
   let productThree = productValidation.pop();
 
   imageOne.src = allProduct[productOne].src;
-  imageOne.alt = allProduct[productOne].name;
+  imageOne.alt = allProduct[productOne].product;
   allProduct[productOne].views++;
 
+
+
   imageTwo.src = allProduct[productTwo].src;
-  imageTwo.alt = allProduct[productTwo].name;
+  imageTwo.alt = allProduct[productTwo].product;
   allProduct[productTwo].views++;
 
+
   imageThree.src = allProduct[productThree].src;
-  imageOne.alt = allProduct[productThree].name;
+  imageOne.alt = allProduct[productThree].product;
   allProduct[productThree].views++;
 }
 
 
 function handleProductClick(event) {
-    if (event.target === myContainer) {
-        alert('click on an IMAGE please');
-      }
-    
-    renderRandomProduct();
-    clicks++;
-    let clickedProduct = event.target.alt;
-    for (let i = 0; i < allProduct.length; i++) {
-      if (clickedProduct === allProduct[i].name) {
-        allProduct[i].clicks++;
-      }
-    }
-    
-
-    if (clicks === clicksAllowed) {
-      myContainer.removeEventListener('click', handleProductClick);
+  if (event.target === myContainer) {
+    alert('click on an IMAGE please');
+  }
+  clicks++;
+  let clickedProduct = event.target.alt;
+  for (let i = 0; i < allProduct.length; i++) {
+    console.log('i made it to line 86')
+    if (clickedProduct === allProduct[i].product) {
+      console.log('i made it to line 88')
+      allProduct[i].clicked++;
     }
   }
-
-  function renderResults() {
-    let ul = document.querySelector('ul');
-    for (let i = 0; i < allProduct.length; i++) {
-      let li = document.createElement('li');
-      li.textContent = `${allProduct[i].product} had ${allProduct[i].views} views and was clicked ${allProduct[i].clicks} times.`;
-      ul.appendChild(li);
-    }
-  }
-
-  function handleButtonClick(event) { //eslint-disable-line
-    if (clicks === clicksAllowed) {
-      renderResults();
-    }
-  }
-
   renderRandomProduct();
+  if (clicks === clicksAllowed) {
+    myContainer.removeEventListener('click', handleProductClick);
+
+  }
+}
+
+function renderResults() {
+  let ul = document.querySelector('ul');
+  for (let i = 0; i < allProduct.length; i++) {
+    let li = document.createElement('li');
+    li.textContent = `${allProduct[i].product} had ${allProduct[i].views} views and was clicked ${allProduct[i].clicked} times.`;
+    ul.appendChild(li);
+  }
+}
+
+function handleButtonClick(event) { //eslint-disable-line
+  if (clicks === clicksAllowed) {
+    renderResults();
+  }
+}
+
+renderRandomProduct();
 
 
-  myContainer.addEventListener('click', handleProductClick);
-  myButton.addEventListener('click', handleButtonClick);
+myContainer.addEventListener('click', handleProductClick);
+myButton.addEventListener('click', handleButtonClick);
