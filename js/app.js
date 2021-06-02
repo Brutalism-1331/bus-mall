@@ -13,6 +13,7 @@ let imageOne = document.getElementById('imgOne');
 let imageTwo = document.getElementById('imgTwo');
 let imageThree = document.getElementById('imgThree');
 
+let thumbsImg = 'img/thumbs.jpeg';
 
 
 function CreateProduct(product, fileExtension = 'jpg') {
@@ -20,6 +21,7 @@ function CreateProduct(product, fileExtension = 'jpg') {
   this.src = `img/${product}.${fileExtension}`;
   this.clicked = 0;
   this.views = 0;
+  this.thumbs = 0;
   allProduct.push(this);
 }
 
@@ -58,7 +60,7 @@ function renderRandomProduct() {
   }
 
   if (checkProductValidation.length > 3) {
-    checkProductValidation.splice(3,5)
+    checkProductValidation.splice(3, 5)
   }
 
   let productOne = productValidation.pop();
@@ -91,6 +93,7 @@ function handleProductClick(event) {
   for (let i = 0; i < allProduct.length; i++) {
     if (clickedProduct === allProduct[i].product) {
       allProduct[i].clicked++;
+      allProduct[i].thumbs++;
     }
   }
   renderRandomProduct();
@@ -104,7 +107,18 @@ function renderResults() {
   let ul = document.querySelector('ul');
   for (let i = 0; i < allProduct.length; i++) {
     let li = document.createElement('li');
-    li.textContent = `${allProduct[i].product} had ${allProduct[i].views} views and was clicked ${allProduct[i].clicked} times.`;
+    let data = document.createElement('p')
+
+    data.textContent = `${allProduct[i].product.toUpperCase()}: Had ${allProduct[i].views} views, Was clicked ${allProduct[i].clicked} times.`;
+    li.appendChild(data);
+    for (let j = 0; j < allProduct[i].clicked; j++) {
+      let thumsPic = document.createElement('img');
+      thumsPic.setAttribute('src',thumbsImg);
+      console.log(thumsPic);
+      li.appendChild(thumsPic);
+    }
+
+    // li.textContent = data
     ul.appendChild(li);
   }
 }

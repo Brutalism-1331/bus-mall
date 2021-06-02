@@ -44,3 +44,15 @@ main div {
 main div:hover, section img:hover {
   cursor: pointer;
 }
+
+
+li {
+  border: 4px solid rgba(255, 0, 0, 0.09);
+  padding-left: 100px;
+  margin-bottom: 1px;
+}
+
+ul img {
+  width: 20px;
+  border-radius: 50%;
+}
