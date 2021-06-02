@@ -14,7 +14,7 @@ let imageTwo = document.getElementById('imgTwo');
 let imageThree = document.getElementById('imgThree');
 
 let thumbsImg = 'img/thumbs.jpeg';
-
+let viewedImg = 'img/eyes.png';
 
 function CreateProduct(product, fileExtension = 'jpg') {
   this.product = product;
@@ -111,10 +111,16 @@ function renderResults() {
 
     data.textContent = `${allProduct[i].product.toUpperCase()}: Had ${allProduct[i].views} views, Was clicked ${allProduct[i].clicked} times.`;
     li.appendChild(data);
+
+    for (let k = 0; k < allProduct[i].views; k++) {
+      let viewedPic = document.createElement('img');
+      viewedPic.setAttribute('src',viewedImg);
+      li.appendChild(viewedPic);
+    }
+
     for (let j = 0; j < allProduct[i].clicked; j++) {
       let thumsPic = document.createElement('img');
       thumsPic.setAttribute('src',thumbsImg);
-      console.log(thumsPic);
       li.appendChild(thumsPic);
     }
 
