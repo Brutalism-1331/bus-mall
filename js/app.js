@@ -5,6 +5,7 @@ let allProduct = [];
 let clicks = 0;
 let clicksAllowed = 25;
 let productValidation = [];
+let checkProductValidation = [];
 
 let myContainer = document.querySelector('section');
 let myButton = document.querySelector('div');
@@ -47,11 +48,17 @@ function selectRandomProductIndex() {
 }
 
 function renderRandomProduct() {
+
   while (productValidation.length < 3) {
     let uniqueProduct = selectRandomProductIndex();
-    while (!productValidation.includes(uniqueProduct)) {
+    while (!productValidation.includes(uniqueProduct) && !checkProductValidation.includes(uniqueProduct)) {
       productValidation.push(uniqueProduct);
+      checkProductValidation.unshift(uniqueProduct);
     }
+  }
+
+  if (checkProductValidation.length > 3) {
+    checkProductValidation.splice(3,5)
   }
 
   let productOne = productValidation.pop();
@@ -82,9 +89,7 @@ function handleProductClick(event) {
   clicks++;
   let clickedProduct = event.target.alt;
   for (let i = 0; i < allProduct.length; i++) {
-    console.log('i made it to line 86')
     if (clickedProduct === allProduct[i].product) {
-      console.log('i made it to line 88')
       allProduct[i].clicked++;
     }
   }
