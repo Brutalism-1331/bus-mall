@@ -99,8 +99,62 @@ function handleProductClick(event) {
   renderRandomProduct();
   if (clicks === clicksAllowed) {
     myContainer.removeEventListener('click', handleProductClick);
-
+    renderResultsChart();
   }
+}
+
+function renderResultsChart() {
+  let ctx = document.getElementById('myChart').getContext('2d');
+
+  let productName = [];
+  let numViews = [];
+  let numClicks = [];
+
+  for (let i = 0; i < allProduct.length; i++) {
+    productName.push(allProduct[i].product);
+    numViews.push(allProduct[i].views);
+    numClicks.push(allProduct[i].clicked);
+  }
+  console.log(numClicks);
+
+  let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: productName,
+      datasets: [{
+        label: 'Number Of Views',
+        data: numViews,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+       
+        ],
+        borderWidth: 1,
+      },
+      {
+        label: 'Number Of Clicks',
+        data: numClicks,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+       
+        ],
+        borderWidth: 1,
+        
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 }
 
 function renderResults() {
@@ -114,13 +168,13 @@ function renderResults() {
 
     for (let k = 0; k < allProduct[i].views; k++) {
       let viewedPic = document.createElement('img');
-      viewedPic.setAttribute('src',viewedImg);
+      viewedPic.setAttribute('src', viewedImg);
       li.appendChild(viewedPic);
     }
 
     for (let j = 0; j < allProduct[i].clicked; j++) {
       let thumsPic = document.createElement('img');
-      thumsPic.setAttribute('src',thumbsImg);
+      thumsPic.setAttribute('src', thumbsImg);
       li.appendChild(thumsPic);
     }
 
@@ -134,6 +188,7 @@ function handleButtonClick(event) { //eslint-disable-line
     renderResults();
   }
 }
+
 
 renderRandomProduct();
 
