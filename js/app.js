@@ -25,32 +25,39 @@ function CreateProduct(product, fileExtension = 'jpg') {
   allProduct.push(this);
 }
 
-new CreateProduct('bag');
-new CreateProduct('banana');
-new CreateProduct('bathroom');
-new CreateProduct('boots');
-new CreateProduct('breakfast');
-new CreateProduct('bubblegum');
-new CreateProduct('chair');
-new CreateProduct('cthulhu');
-new CreateProduct('dog-duck');
-new CreateProduct('dragon');
-new CreateProduct('pen');
-new CreateProduct('pet-sweep');
-new CreateProduct('scissors');
-new CreateProduct('shark');
-new CreateProduct('sweep', 'png');
-new CreateProduct('tauntaun');
-new CreateProduct('unicorn');
-new CreateProduct('water-can');
-new CreateProduct('wine-glass');
+let retrievedProducts = localStorage.getItem('products');
+
+if (retrievedProducts) {
+  let parsedProducts = JSON.parse(retrievedProducts);
+  allProduct = parsedProducts.map(item => {return item});
+} else {
+  new CreateProduct('bag');
+  new CreateProduct('banana');
+  new CreateProduct('bathroom');
+  new CreateProduct('boots');
+  new CreateProduct('breakfast');
+  new CreateProduct('bubblegum');
+  new CreateProduct('chair');
+  new CreateProduct('cthulhu');
+  new CreateProduct('dog-duck');
+  new CreateProduct('dragon');
+  new CreateProduct('pen');
+  new CreateProduct('pet-sweep');
+  new CreateProduct('scissors');
+  new CreateProduct('shark');
+  new CreateProduct('sweep', 'png');
+  new CreateProduct('tauntaun');
+  new CreateProduct('unicorn');
+  new CreateProduct('water-can');
+  new CreateProduct('wine-glass');
+}
+
 
 function selectRandomProductIndex() {
   return Math.floor(Math.random() * allProduct.length);
 }
 
 function renderRandomProduct() {
-
   while (productValidation.length < 3) {
     let uniqueProduct = selectRandomProductIndex();
     while (!productValidation.includes(uniqueProduct) && !checkProductValidation.includes(uniqueProduct)) {
@@ -97,9 +104,12 @@ function handleProductClick(event) {
     }
   }
   renderRandomProduct();
+
   if (clicks === clicksAllowed) {
     myContainer.removeEventListener('click', handleProductClick);
     renderResultsChart();
+    let stringIfyProducts = JSON.stringify(allProduct);
+    localStorage.setItem('products', stringIfyProducts);
   }
 }
 
@@ -129,7 +139,7 @@ function renderResultsChart() {
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
-       
+
         ],
         borderWidth: 1,
       },
@@ -141,10 +151,10 @@ function renderResultsChart() {
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
-       
+
         ],
         borderWidth: 1,
-        
+
       }]
     },
     options: {
